@@ -11,7 +11,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
+body {
+  background: red !important;
+}
 /* ================= LOADING ================= */
 
 .loading-screen {
@@ -174,4 +176,5 @@ body {
   .greeting-box {
     padding: 25px;
   }
+
 }
