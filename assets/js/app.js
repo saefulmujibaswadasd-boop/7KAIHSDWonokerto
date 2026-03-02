@@ -26,24 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ================= LOADING ================= */
 
 function initLoading() {
-  window.addEventListener("load", () => {
-    const btn = document.getElementById("startAppBtn");
-    const loadingScreen = document.getElementById("loadingScreen");
+  const loadingScreen = document.getElementById("loadingScreen");
 
-    if (btn) {
-      btn.classList.remove("d-none");
-
-      btn.addEventListener("click", () => {
-        speak("Selamat datang di aplikasi 7 Kebiasaan Anak Indonesia Hebat SD Negeri Wonokerto.");
-
-        if (loadingScreen) {
-          loadingScreen.style.display = "none";
-        }
-      });
+  // Tutup loading setelah 1 detik (stabil untuk GitHub Pages)
+  setTimeout(() => {
+    if (loadingScreen) {
+      loadingScreen.style.display = "none";
     }
-  });
+  }, 1000);
 }
-
 /* ================= EVENTS ================= */
 
 function initEvents() {
@@ -158,3 +149,4 @@ function speak(text) {
   speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
+
