@@ -8,18 +8,15 @@ const AppState = {
   currentSoal: 0
 };
 
-let soalList = [];
+const soalList = [
+  "Ananda wau tangi jam pinten?",
+  "Apakah sudah membaca doa bangun tidur?",
+  "Apakah sudah sholat subuh?",
+  "Apakah sudah merapikan tempat tidur?",
+  "Sebutkan dua nama pahlawan nasional dan asalnya.",
+  "Ubahlah cerita menjadi kalimat matematika."
+];
 
-function generateSoal() {
-  return [
-    `AL Khamdulillah Ananda ${AppState.currentNama} sampun tangi angsale tilem, wau tangi jam pinten?`,
-    "Ayo kulo pandu maos do'a tangi tilem, bismillahirohman nirokhim, al khamdulillahi ahyana ba'damma amatana wa ilaihinnusyur, aamiin?",
-    "bakdo niki ananda ${AppState.currentNama} ajeng nopo, sebat aken tigo rencana?",
-    "Apakah sudah merapikan tempat tidur?",
-    "Sebutkan dua nama pahlawan nasional dan asalnya.",
-    "Ubahlah cerita menjadi kalimat matematika."
-  ];
-}
 document.addEventListener("DOMContentLoaded", () => {
   initApp();
 });
@@ -150,4 +147,3 @@ function speak(text) {
   speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
-
