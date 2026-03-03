@@ -1,6 +1,8 @@
 /* =====================================================
-   7KAIH DIGITAL 2026 - STABLE CORE VERSION
+   7KAIH DIGITAL 2026 - STABLE CORE VERSION (FIXED)
 ===================================================== */
+
+/* ================= STATE ================= */
 
 const AppState = {
   dataSiswa: JSON.parse(localStorage.getItem("dataSiswa")) || [],
@@ -8,21 +10,26 @@ const AppState = {
   currentSoal: 0
 };
 
+let soalList = [];
+
+/* ================= GENERATE SOAL ================= */
+
 function generateSoal() {
   return [
-  "Al khamdulillah Ananda ${AppState.currentNama} sampun tangi tilem, wau tangi jam pinten?",
-  "sampun maos do'a tangi tilem dereng? monggo kulo tuntun maos do'a nipun. Bismillahirohman nirochim alk khamdulillahiladzi ahyana ba'dama amatana wailaihinnusur?",
-  "Apakah sudah sholat subuh?",
-  "Apakah sudah merapikan tempat tidur?",
-  "Sebutkan dua nama pahlawan nasional dan asalnya.",
-  "Ubahlah cerita menjadi kalimat matematika."
-];
+    `Ananda ${AppState.currentNama} wau tangi jam pinten?`,
+    "Apakah sudah membaca doa bangun tidur?",
+    "Apakah sudah sholat subuh?",
+    "Apakah sudah merapikan tempat tidur?",
+    "Sebutkan dua nama pahlawan nasional dan asalnya.",
+    "Ubahlah cerita menjadi kalimat matematika."
+  ];
+}
+
+/* ================= INIT ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
   initApp();
 });
-
-/* ================= INIT ================= */
 
 function initApp() {
   hideLoading();
@@ -33,7 +40,6 @@ function initApp() {
 
 function hideLoading() {
   const loading = document.getElementById("loadingScreen");
-
   setTimeout(() => {
     if (loading) loading.style.display = "none";
   }, 800);
@@ -65,7 +71,12 @@ function handleLogin() {
     return;
   }
 
+  // Set nama
   AppState.currentNama = siswa.nama_siswa;
+
+  // 🔥 WAJIB: Generate soal setelah nama diketahui
+  soalList = generateSoal();
+  AppState.currentSoal = 0;
 
   document.getElementById("openingScreen")?.classList.add("d-none");
 
@@ -86,7 +97,6 @@ function showGreeting() {
   if (text) text.textContent = message;
 
   speak(message);
-
   sholawat?.play().catch(() => {});
 
   setTimeout(() => {
@@ -96,19 +106,22 @@ function showGreeting() {
   }, 3500);
 }
 
-/* ================= SOAL ================= */
+/* ================= TAMPILKAN SOAL ================= */
 
 function tampilkanSoal() {
   const soalText = document.getElementById("soalText");
+  if (!soalText) return;
+
+  if (soalList.length === 0) return;
 
   if (AppState.currentSoal >= soalList.length) {
-    if (soalText) soalText.innerHTML = "<h4>Terima kasih</h4>";
+    soalText.innerHTML = "<h4>Terima kasih</h4>";
+    updateProgress();
     return;
   }
 
   const soal = soalList[AppState.currentSoal];
-
-  if (soalText) soalText.textContent = soal;
+  soalText.textContent = soal;
 
   updateProgress();
   speak(soal);
@@ -131,7 +144,7 @@ function kirimJawaban() {
 
 function updateProgress() {
   const bar = document.getElementById("progressBar");
-  if (!bar) return;
+  if (!bar || soalList.length === 0) return;
 
   const percent = (AppState.currentSoal / soalList.length) * 100;
   bar.style.width = percent + "%";
@@ -144,9 +157,8 @@ function speak(text) {
 
   const msg = new SpeechSynthesisUtterance(text);
   msg.lang = "id-ID";
+  msg.rate = 0.95;
 
   speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
-
-
