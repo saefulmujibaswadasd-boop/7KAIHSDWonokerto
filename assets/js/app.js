@@ -8,7 +8,8 @@ const AppState = {
   currentSoal: 0
 };
 
-const soalList = [
+function generateSoal() {
+  return [
   "Al khamdulillah Ananda ${AppState.currentNama} sampun tangi tilem, wau tangi jam pinten?",
   "sampun maos do'a tangi tilem dereng? monggo kulo tuntun maos do'a nipun. Bismillahirohman nirochim alk khamdulillahiladzi ahyana ba'dama amatana wailaihinnusur?",
   "Apakah sudah sholat subuh?",
@@ -147,4 +148,5 @@ function speak(text) {
   speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
+
 
